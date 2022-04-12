@@ -205,7 +205,7 @@ const en = [
         keyCode: 13,
     },
     {
-        basicValue: shift,
+        basicValue: 'Shift',
         shift: null,
         keyCode: 16,
     },
@@ -265,7 +265,7 @@ const en = [
         keyCode: 38,
     },
     {
-        basicValue: shift,
+        basicValue: 'Shift',
         shift: null,
         keyCode: 16,
     },
@@ -310,7 +310,7 @@ const en = [
         keyCode: 40,
     },
     {
-        basicValue: "&#8594;",
+        basicValue: '&#8594;',
         shift: null,
         keyCode: 39,
     }

@@ -13,7 +13,7 @@ const createElement = (elem, classNames, child, parent, ...dataAttributes) => {
                 element.append(childElem);
             })
         } else if (typeof child === 'string') {
-            element.textContent = child;
+            element.innerHTML = child;
         } else {
             element.append(child);
         }

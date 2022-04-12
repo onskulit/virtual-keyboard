@@ -3,7 +3,7 @@
  }
 
  const storageGet = (name) => {
-    return window.localStorage.getItem(name);
+    return window.localStorage.getItem(name) || 'en';
  }
 
  export { storageSet, storageGet }
