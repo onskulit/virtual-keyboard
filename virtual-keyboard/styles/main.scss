@@ -1,4 +1,9 @@
 $color-primary: #FFFADD;
+$color-primary-l: #FFE5B4;
+$color-primary-s: #fcfbf7;
+$color-secondary: #FADADD; 
+$color-secondary-l: #FFD1DC;
+$color-secondary-xl: #ff98b0;
 
 * {
     box-sizing: border-box;
@@ -8,6 +13,7 @@ body {
     margin: 0 auto;
     padding-top: 20px;
     font-family: 'Roboto', sans-serif;
+    background-color: $color-primary-s;
 }
 
 textarea {
@@ -16,7 +22,7 @@ textarea {
     height: 200px;
     resize: none;
     margin: 0 auto;
-    padding: 5px 10px;
+    padding: 10px 10px;
     margin: 0 auto 20px auto;
     font-family: inherit;
     color: black;
@@ -24,6 +30,17 @@ textarea {
     border: 2px solid black;
     background: $color-primary;
     border-radius: 10px;
+
+    &::-webkit-scrollbar {
+      background-color: $color-primary;
+      width: 15px;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $color-secondary;
+      border-radius: 10px;
+    }
 }
 
 .keyboard {
@@ -34,7 +51,7 @@ textarea {
     margin: 0 auto;
     background-color: $color-primary;
     font-weight: bold;
-    box-shadow: 0px 0px 10px 5px rgba(34, 60, 80, 0.2);
+    box-shadow: 0px 0px 10px 10px rgba(250, 218, 221, 0.8);
   }
   
   .row {
@@ -72,21 +89,26 @@ textarea {
     align-items: center;
     justify-content: center;
     color: black;
-    background-color: #FADADD;
+    background-color: $color-secondary;
     transition: 0.1s;
-  }
-  
-  .key:hover {
-    background-color: #FFD1DC;
-    margin: 1px 1px;
     cursor: pointer;
+
+    &.active {
+      background-color: $color-secondary-xl;
+      margin: 1px 1px;
+    }
+
+    &:hover {
+      background-color: $color-secondary-l;
+    }
   }
   
   .info {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #FFE5B4;
+    background-color: $color-primary-l;
     border: 2px black solid;
     border-radius: 50%;
+    cursor: pointer;
   }

@@ -6,6 +6,7 @@ body {
   margin: 0 auto;
   padding-top: 20px;
   font-family: "Roboto", sans-serif;
+  background-color: #fcfbf7;
 }
 
 textarea {
@@ -14,13 +15,22 @@ textarea {
   height: 200px;
   resize: none;
   margin: 0 auto;
-  padding: 5px 10px;
+  padding: 10px 10px;
   margin: 0 auto 20px auto;
   font-family: inherit;
   color: black;
   font-size: 20px;
   border: 2px solid black;
   background: #FFFADD;
+  border-radius: 10px;
+}
+textarea::-webkit-scrollbar {
+  background-color: #FFFADD;
+  width: 15px;
+  border-radius: 10px;
+}
+textarea::-webkit-scrollbar-thumb {
+  background-color: #FADADD;
   border-radius: 10px;
 }
 
@@ -32,7 +42,7 @@ textarea {
   margin: 0 auto;
   background-color: #FFFADD;
   font-weight: bold;
-  box-shadow: 0px 0px 10px 5px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 0px 10px 10px rgba(250, 218, 221, 0.8);
 }
 
 .row {
@@ -72,12 +82,14 @@ textarea {
   color: black;
   background-color: #FADADD;
   transition: 0.1s;
+  cursor: pointer;
 }
-
+.key.active {
+  background-color: #ff98b0;
+  margin: 1px 1px;
+}
 .key:hover {
   background-color: #FFD1DC;
-  margin: 1px 1px;
-  cursor: pointer;
 }
 
 .info {
@@ -87,6 +99,7 @@ textarea {
   background-color: #FFE5B4;
   border: 2px black solid;
   border-radius: 50%;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=style.css.map */
