@@ -5,6 +5,10 @@ $color-secondary: #FADADD;
 $color-secondary-l: #FFD1DC;
 $color-secondary-xl: #ff98b0;
 
+html {
+  font-size: 10px;  
+}
+
 * {
     box-sizing: border-box;
 }
@@ -26,7 +30,7 @@ textarea {
     margin: 0 auto 20px auto;
     font-family: inherit;
     color: black;
-    font-size: 20px;
+    font-size: 1.6rem;
     border: 2px solid black;
     background: $color-primary;
     border-radius: 10px;
@@ -50,6 +54,7 @@ textarea {
     border-radius: 10px;
     margin: 0 auto;
     background-color: $color-primary;
+    font-size: 1.6rem;
     font-weight: bold;
     box-shadow: 0px 0px 10px 10px rgba(250, 218, 221, 0.8);
   }
@@ -86,6 +91,7 @@ textarea {
     padding: 5px;
     border: 2px black solid;
     border-radius: 10px;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     color: black;
@@ -100,6 +106,11 @@ textarea {
 
     &:hover {
       background-color: $color-secondary-l;
+    }
+
+    &__sub {
+      width: 100%;
+      font-size: 1.2rem;
     }
   }
   

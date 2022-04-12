@@ -1,5 +1,3 @@
-import en from './scripts/en.js';
-
 let allKeys = [];
 
 document.addEventListener('keydown', (event) => {
