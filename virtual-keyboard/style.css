@@ -23,7 +23,7 @@ textarea {
   margin: 0 auto 20px auto;
   font-family: inherit;
   color: black;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   border: 2px solid black;
   background: #FFFADD;
   border-radius: 10px;
@@ -90,18 +90,23 @@ textarea::-webkit-scrollbar-thumb {
   transition: 0.1s;
   cursor: pointer;
 }
+.key:hover {
+  background-color: #FFD1DC;
+}
 .key.active {
   background-color: #ff98b0;
   margin: 1px 1px;
-}
-.key:hover {
-  background-color: #FFD1DC;
 }
 .key__sub {
   width: 100%;
   font-size: 1.2rem;
 }
 
+/* font-size: 1.2rem;
+
+    .key__sub {
+      font-size: 1.6rem;
+    } */
 .info {
   display: flex;
   justify-content: center;

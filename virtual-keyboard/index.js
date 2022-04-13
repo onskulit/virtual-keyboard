@@ -1,10 +1,10 @@
 import { storageGet } from './scripts/utils/storage.js';
-import Keyboard from './scripts/keyboard.js';
+import Keyboard from './scripts/Keyboard.js';
 import create from './scripts/utils/create.js';
 
 // 
 
-const  lang = 'en'; //storageGet('lang', 'en');
+const  lang = 'ru'; //storageGet('lang', 'en');
 
 document.body.innerHTML = '';
 
