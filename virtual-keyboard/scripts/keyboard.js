@@ -18,7 +18,6 @@ class Keyboard {
         this.row3 = create('div', 'row row-3', null, this.container);
         this.row4 = create('div', 'row row-4', null, this.container);
         this.row5 = create('div', 'row row-5', null, this.container);
-        this.rows = [this.row1, this.row2, this.row3, this.row4, this.row5];
         return this;
     }
 
@@ -40,16 +39,15 @@ class Keyboard {
                 this.row5.append(newKey.container);
             }
         })
-        console.log(this.keysButtons);
 
         this.row5.append(create('div', 'info', 'Info'));
 
         document.addEventListener('keydown', (event) => {
             event.preventDefault();
             this.output.focus();
-            console.log(event);
+            const keyObj = this.keysButtons.find((key) => key.keyCode === event.keyCode);
 
-            if (event.code.match(/Right/) || event.code.match(/Left/)) {
+            if (event.code.match(/Control|Shift|Alt/)) {
                 const items = document.querySelectorAll(`[data-code="${event.keyCode}"]`);
                 if (event.code.match(/Right/)) {
                     items[1].classList.add('active');
@@ -57,28 +55,45 @@ class Keyboard {
                     items[0].classList.add('active');
                 }
             } else {
-                const item = document.querySelector(`[data-code="${event.keyCode}"]`);
                 if (event.keyCode === 20) {
-                    item.classList.toggle('active');
+                    keyObj.container.classList.toggle('active');
+                    this.isCaps = !this.isCaps ? true : false;
                 } else {
-                    item.classList.add('active');
+                    keyObj.container.classList.add('active');
                 }
             }
 
             if(event.keyCode === 16) this.isShift = true;
             if(event.keyCode === 18) this.isAlt = true;
-
             if(event.keyCode === 16 && this.isAlt || event.keyCode === 18 && this.isShift) {
                 this.switchLanguage();
             }
+
+            
+            if (!this.isCaps) {
+                this.activateKey(keyObj, this.isShift ? keyObj.shift : keyObj.basicValue);
+            } else if (this.isCaps) {
+                if (this.isShift) {
+                    this.activateKey(keyObj, keyObj.keySub.innerHTML ? keyObj.shift : keyObj.basicValue);
+                } else {
+                    this.activateKey(keyObj, keyObj.keySub.innerHTML ? keyObj.basicValue : keyObj.shift);
+                }
+            }    
         });
 
         document.addEventListener('keyup', (event) => {
-            document.querySelectorAll(`[data-code="${event.keyCode}"]`).forEach(item => {
-                if(event.keyCode !== 20) {
-                    item.classList.remove('active');
+            if (event.code.match(/Control|Shift|Alt/)) {
+                const items = document.querySelectorAll(`[data-code="${event.keyCode}"]`);
+                if (event.code.match(/Right/)) {
+                    items[1].classList.remove('active');
+                } else {
+                    items[0].classList.remove('active');
                 }
-            })
+            }
+            
+            if (event.keyCode !== 20) {
+                document.querySelector(`[data-code="${event.keyCode}"]`).classList.remove('active');
+            }
 
             if(event.keyCode === 16) this.isShift = false;
             if(event.keyCode === 18) this.isAlt = false;
@@ -91,18 +106,40 @@ class Keyboard {
 
             if (event.target.closest('.key')) {
                 const key = event.target.closest('.key');
+                const keyObj = this.keysButtons.find((key) => key.keyCode == event.target.closest('.key').dataset.code);
                 if(key.dataset.code === '20') {
                     key.classList.toggle('active');
+                    this.isCaps = !this.isCaps ? true : false;
                 } else {
                     key.classList.add('active');
                     this.currentPressedKey = key;
+
+                    if(key.dataset.code === '16') this.isShift = true;
+                    if(key.dataset.code === '18') this.isAlt = true;
+
+                    if(key.dataset.code === '16' && this.isAlt || key.dataset.code === '18' && this.isShift) {
+                        this.switchLanguage();
+                    }
+
+                    if (!this.isCaps) {
+                        this.activateKey(keyObj, this.isShift ? keyObj.shift : keyObj.basicValue);
+                    } else if (this.isCaps) {
+                        if (this.isShift) {
+                            this.activateKey(keyObj, keyObj.keySub.innerHTML ? keyObj.shift : keyObj.basicValue);
+                        } else {
+                            this.activateKey(keyObj, keyObj.keySub.innerHTML ? keyObj.basicValue : keyObj.shift);
+                        }
+                    } 
                 }
             }
         });
 
         document.addEventListener('mouseup', () => {
+            this.output.focus();
             if (this.currentPressedKey) {
                 this.currentPressedKey.classList.remove('active');
+                if (this.currentPressedKey.dataset.code === '16') this.isShift = false;
+                if (this.currentPressedKey.dataset.code === '18') this.isAlt = false;
                 this.currentPressedKey = null;
             }
         })
@@ -128,6 +165,48 @@ class Keyboard {
                 button.keySub.innerHTML = '';
             }
         });
+    }
+
+    activateKey(keyObj, symbol) {
+        let cursorPosition = this.output.selectionStart;
+        const leftFromCursor = this.output.value.slice(0, cursorPosition);
+        const rightFromCursor = this.output.value.slice(cursorPosition);
+
+        const fnButtons = {
+            '9': () => { //Tab
+                console.log(this.output);
+                this.output.value = `${leftFromCursor}\t${rightFromCursor}`;
+                ++cursorPosition;
+            }, 
+            '37': () => cursorPosition = cursorPosition - 1 >= 0 ? --cursorPosition : 0, //ArrowLeft
+            '39': () => ++cursorPosition, //ArrowRight
+            '38': () => { //ArrowUp
+                const positionFromLeft = this.output.value.slice(0, cursorPosition).match(/(\n).*$(?!\1)/g || [[1]]);
+                cursorPosition -= positionFromLeft[0].length;
+            },
+            '40': () => { //ArrowDown
+                const positionFromLeft = this.output.value.slice(cursorPosition).match(/(\n).*$(?!\1)/g || [[1]]);
+                cursorPosition += positionFromLeft[0].length;
+            },
+            '13': () => { //Enter
+                this.output.value = `${leftFromCursor}\n${rightFromCursor}`;
+                ++cursorPosition;
+            },
+            '8': () => { //Backspace
+                this.output.value = `${leftFromCursor.slice(0, -1)}${rightFromCursor}`;
+                --cursorPosition;
+            }
+        }
+
+        console.log(keyObj);
+        if(fnButtons[keyObj.keyCode]) {
+            fnButtons[keyObj.keyCode]();
+        } else if (keyObj.basicValue.length < 2) {
+            ++cursorPosition;
+            this.output.value = `${leftFromCursor}${symbol || ''}${rightFromCursor}`;
+        }
+
+        this.output.setSelectionRange(cursorPosition, cursorPosition);
     }
 }
 
