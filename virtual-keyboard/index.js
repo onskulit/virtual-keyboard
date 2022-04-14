@@ -2,11 +2,11 @@ import { storageGet } from './scripts/utils/storage.js';
 import Keyboard from './scripts/Keyboard.js';
 import create from './scripts/utils/create.js';
 
-// 
+document.addEventListener('DOMContentLoaded', (e) => {
+   
+})
 
-const  lang = 'ru'; //storageGet('lang', 'en');
-
-document.body.innerHTML = '';
+const  lang = storageGet('lang');
 
 new Keyboard().init(lang).generateLayout();
 

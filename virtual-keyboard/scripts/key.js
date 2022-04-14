@@ -7,7 +7,7 @@ class Key {
         this.keyCode = keyCode;
         this.isFnKey = basicValue.length > 1 ? true : false;
 
-        if (shift && shift.match(/[^a-zA-Zа-яА-ЯёЁ]/)) {
+        if (this.shift && this.shift.match(/[^a-zA-Zа-яА-ЯёЁ]/)) {
             this.keySub = create('div', 'key__sub', this.shift);
         } else {
             this.keySub = create('div', 'key__sub', '');

@@ -23,42 +23,52 @@ class Keyboard {
     }
 
     generateLayout() {
-        this.keysArr = [];
+        this.keysButtons = [];
 
         this.keys.forEach((key, index) => {
-            const newKey = new Key(key).container;
-            this.keysArr.push(newKey);
+            const newKey = new Key(key);
+            this.keysButtons.push(newKey);
             if (index <= 13) {
-                this.row1.append(newKey);
+                this.row1.append(newKey.container);
             } else if (index > 13 && index <= 27) {
-                this.row2.append(newKey);
+                this.row2.append(newKey.container);
             } else if (index > 27 && index <= 40) {
-                this.row3.append(newKey);
+                this.row3.append(newKey.container);
             } else if (index > 40 && index <= 53) {
-                this.row4.append(newKey);
+                this.row4.append(newKey.container);
             } else {
-                this.row5.append(newKey);
+                this.row5.append(newKey.container);
             }
         })
+        console.log(this.keysButtons);
 
         this.row5.append(create('div', 'info', 'Info'));
 
         document.addEventListener('keydown', (event) => {
             event.preventDefault();
             this.output.focus();
-            document.querySelectorAll(`[data-code="${event.keyCode}"]`).forEach(item => {
-                if(event.keyCode === 20) {
+            console.log(event);
+
+            if (event.code.match(/Right/) || event.code.match(/Left/)) {
+                const items = document.querySelectorAll(`[data-code="${event.keyCode}"]`);
+                if (event.code.match(/Right/)) {
+                    items[1].classList.add('active');
+                } else {
+                    items[0].classList.add('active');
+                }
+            } else {
+                const item = document.querySelector(`[data-code="${event.keyCode}"]`);
+                if (event.keyCode === 20) {
                     item.classList.toggle('active');
                 } else {
                     item.classList.add('active');
                 }
-            })
+            }
 
             if(event.keyCode === 16) this.isShift = true;
             if(event.keyCode === 18) this.isAlt = true;
-        
 
-            if(this.isShift && this.isAlt) {
+            if(event.keyCode === 16 && this.isAlt || event.keyCode === 18 && this.isShift) {
                 this.switchLanguage();
             }
         });
@@ -82,7 +92,6 @@ class Keyboard {
             if (event.target.closest('.key')) {
                 const key = event.target.closest('.key');
                 if(key.dataset.code === '20') {
-                    console.log(key.dataset.code);
                     key.classList.toggle('active');
                 } else {
                     key.classList.add('active');
@@ -102,15 +111,23 @@ class Keyboard {
     }
 
     switchLanguage() {
-        this.rows.forEach(row => {
-            row.innerHTML = '';
-        })
         const langAbbr = Object.keys(language);
         let langIndex = langAbbr.indexOf(this.container.dataset.language);
         this.keys = langIndex + 1 >= langAbbr.length ? language[langAbbr[langIndex -= langIndex]] : language[langAbbr[++langIndex]];
-        console.log(langIndex);
         this.container.dataset.language = langAbbr[langIndex];
-        this.generateLayout();
+        storage.storageSet('lang', langAbbr[langIndex]);
+        
+        this.keysButtons.forEach((button) => {
+            const keyObj = this.keys.find((key) => key.keyCode === button.keyCode);
+            button.basicValue = keyObj.basicValue;
+            button.shift = keyObj.shift;
+            button.keyMain.innerHTML = button.basicValue;
+            if (keyObj.shift && keyObj.shift.match(/[^a-zA-Zа-яА-ЯёЁ]/g)) {
+                button.keySub.innerHTML = button.shift;
+            } else {
+                button.keySub.innerHTML = '';
+            }
+        });
     }
 }
 
