@@ -1,5 +1,5 @@
 import create from './utils/create.js';
-import Key from './Key.js';
+import Key from './key.js';
 import * as storage from './utils/storage.js';
 import language from './languages/main.js';
 

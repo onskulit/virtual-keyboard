@@ -1,10 +1,6 @@
 import { storageGet } from './scripts/utils/storage.js';
-import Keyboard from './scripts/Keyboard.js';
+import Keyboard from './scripts/keyboard.js';
 import create from './scripts/utils/create.js';
-
-document.addEventListener('DOMContentLoaded', (e) => {
-   
-})
 
 const  lang = storageGet('lang');
 
