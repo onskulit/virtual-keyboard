@@ -111,6 +111,17 @@ textarea {
     &__sub {
       width: 100%;
       font-size: 1.2rem;
+      color: grey;
+
+      &_active {
+        font-size: 1.6rem;
+        color: black;
+      }
+    }
+
+    &_inactive {
+      font-size: 1.2rem;
+      color: grey;
     }
   }
 

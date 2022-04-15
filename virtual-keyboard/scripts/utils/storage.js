@@ -2,8 +2,8 @@
     window.localStorage.setItem(name, value);
  }
 
- const storageGet = (name) => {
-    return window.localStorage.getItem(name) || 'en';
+ const storageGet = (name, alternative) => {
+    return window.localStorage.getItem(name) || alternative;
  }
 
  export { storageSet, storageGet }

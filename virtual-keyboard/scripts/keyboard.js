@@ -58,12 +58,16 @@ class Keyboard {
                 if (event.keyCode === 20) {
                     keyObj.container.classList.toggle('active');
                     this.isCaps = !this.isCaps ? true : false;
+                    this.switchCase(this.isCaps ? true : false);
                 } else {
                     keyObj.container.classList.add('active');
                 }
             }
 
-            if(event.keyCode === 16) this.isShift = true;
+            if(event.keyCode === 16) {
+                this.isShift = true;
+                this.switchCase(true);
+            }
             if(event.keyCode === 18) this.isAlt = true;
             if(event.keyCode === 16 && this.isAlt || event.keyCode === 18 && this.isShift) {
                 this.switchLanguage();
@@ -95,7 +99,10 @@ class Keyboard {
                 document.querySelector(`[data-code="${event.keyCode}"]`).classList.remove('active');
             }
 
-            if(event.keyCode === 16) this.isShift = false;
+            if(event.keyCode === 16) {
+                this.isShift = false;
+                this.switchCase(false);
+            }
             if(event.keyCode === 18) this.isAlt = false;
         });
 
@@ -110,11 +117,15 @@ class Keyboard {
                 if(key.dataset.code === '20') {
                     key.classList.toggle('active');
                     this.isCaps = !this.isCaps ? true : false;
+                    this.switchCase(this.isCaps ? true : false);
                 } else {
                     key.classList.add('active');
                     this.currentPressedKey = key;
 
-                    if(key.dataset.code === '16') this.isShift = true;
+                    if(key.dataset.code === '16') {
+                        this.isShift = true;
+                        this.switchCase(true);
+                    }
                     if(key.dataset.code === '18') this.isAlt = true;
 
                     if(key.dataset.code === '16' && this.isAlt || key.dataset.code === '18' && this.isShift) {
@@ -138,7 +149,10 @@ class Keyboard {
             this.output.focus();
             if (this.currentPressedKey) {
                 this.currentPressedKey.classList.remove('active');
-                if (this.currentPressedKey.dataset.code === '16') this.isShift = false;
+                if (this.currentPressedKey.dataset.code === '16') {
+                    this.isShift = false;
+                    this.switchCase(false);
+                }
                 if (this.currentPressedKey.dataset.code === '18') this.isAlt = false;
                 this.currentPressedKey = null;
             }
@@ -164,7 +178,55 @@ class Keyboard {
             } else {
                 button.keySub.innerHTML = '';
             }
+            this.checkCaseForSwitchLanguage(button);
         });
+    }
+
+    switchCase(isUpper) {
+        if (isUpper) {
+            this.keysButtons.forEach(button => {
+                if(button.keySub.textContent) {
+                    if (this.isShift) {
+                        button.keySub.classList.add('key__sub_active');
+                        button.keyMain.classList.add('key_inactive');
+                    }
+                } 
+                
+                if (button.basicValue.length < 2 && this.isCaps && !this.isShift && !button.keySub.textContent) {
+                    button.keyMain.textContent = button.shift;
+                } else if (button.basicValue.length < 2 && this.isCaps && this.isShift) {
+                    button.keyMain.textContent = button.basicValue;
+                } else if (button.basicValue.length < 2 && !button.keySub.textContent) {
+                    button.keyMain.textContent = button.shift;
+                }
+            });
+        } else {
+            this.keysButtons.forEach(button => {
+                if(button.keySub.textContent && button.basicValue.length < 2) {
+                    button.keySub.classList.remove('key__sub_active');
+                    button.keyMain.classList.remove('key_inactive');
+
+                    /* if(this.isCaps) {
+                        button.keyMain.textContent = button.basicValue;
+                    } else if(!this.isCaps) {
+                        button.keyMain.textContent = button.shift;
+                    } */
+                } else if (button.basicValue.length < 2) {
+                    if (this.isCaps) {
+                        button.keyMain.textContent = button.shift;
+                    } else {
+                        button.keyMain.textContent = button.basicValue;
+                    }
+                }
+            });
+        }
+    }
+
+    checkCaseForSwitchLanguage(button) {
+        if(!button.keySub.textContent) {
+            if(button.keySub.classList.contains('key__sub_active')) button.keySub.classList.remove('key__sub_active');
+            if(button.keyMain.classList.contains('key_inactive')) button.keyMain.classList.remove('key_inactive');
+        }
     }
 
     activateKey(keyObj, symbol) {
@@ -174,18 +236,17 @@ class Keyboard {
 
         const fnButtons = {
             '9': () => { //Tab
-                console.log(this.output);
                 this.output.value = `${leftFromCursor}\t${rightFromCursor}`;
                 ++cursorPosition;
             }, 
             '37': () => cursorPosition = cursorPosition - 1 >= 0 ? --cursorPosition : 0, //ArrowLeft
             '39': () => ++cursorPosition, //ArrowRight
             '38': () => { //ArrowUp
-                const positionFromLeft = this.output.value.slice(0, cursorPosition).match(/(\n).*$(?!\1)/g || [[1]]);
+                const positionFromLeft = this.output.value.slice(0, cursorPosition).match(/(\n).*$(?!\1)/g) || [[1]];
                 cursorPosition -= positionFromLeft[0].length;
             },
             '40': () => { //ArrowDown
-                const positionFromLeft = this.output.value.slice(cursorPosition).match(/(\n).*$(?!\1)/g || [[1]]);
+                const positionFromLeft = this.output.value.slice(cursorPosition).match(/(\n).*$(?!\1)/) || [[1]];
                 cursorPosition += positionFromLeft[0].length;
             },
             '13': () => { //Enter
@@ -198,7 +259,6 @@ class Keyboard {
             }
         }
 
-        console.log(keyObj);
         if(fnButtons[keyObj.keyCode]) {
             fnButtons[keyObj.keyCode]();
         } else if (keyObj.basicValue.length < 2) {

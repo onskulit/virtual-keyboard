@@ -2,7 +2,7 @@ import { storageGet } from './scripts/utils/storage.js';
 import Keyboard from './scripts/keyboard.js';
 import create from './scripts/utils/create.js';
 
-const  lang = storageGet('lang');
+const  lang = storageGet('lang', 'en');
 
 new Keyboard().init(lang).generateLayout();
 
