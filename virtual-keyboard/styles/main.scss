@@ -1,0 +1,142 @@
+$color-primary: #FFFADD;
+$color-primary-l: #FFE5B4;
+$color-primary-s: #fcfbf7;
+$color-secondary: #FADADD; 
+$color-secondary-l: #FFD1DC;
+$color-secondary-xl: #ff98b0;
+
+html {
+  font-size: 10px;  
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0 auto;
+    padding-top: 20px;
+    font-family: 'Roboto', sans-serif;
+    background-color: $color-primary-s;
+}
+
+textarea {
+    display: block;
+    width: 920px;
+    height: 200px;
+    resize: none;
+    margin: 0 auto;
+    padding: 10px 10px;
+    margin: 0 auto 20px auto;
+    font-family: inherit;
+    color: black;
+    font-size: 1.8rem;
+    border: 2px solid black;
+    background: $color-primary;
+    border-radius: 10px;
+
+    &::-webkit-scrollbar {
+      background-color: $color-primary;
+      width: 15px;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $color-secondary;
+      border-radius: 10px;
+    }
+}
+
+.keyboard {
+    padding: 10px 10px;
+    width: 920px;
+    border: 2px black solid;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: $color-primary;
+    font-size: 1.6rem;
+    font-weight: bold;
+    box-shadow: 0px 0px 10px 10px rgba(250, 218, 221, 0.8);
+  }
+  
+  .row {
+    display: grid;
+    grid-template-rows: 50px;
+    grid-gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .row-1 {
+    grid-template-columns: repeat(13, 50px) 1fr;
+  }
+  
+  .row-2 {
+    grid-template-columns: 70px repeat(12, 50px) 1fr;
+  }
+  
+  .row-3 {
+    grid-template-columns: 90px repeat(11, 50px) 1fr;
+  }
+  
+  .row-4 {
+    grid-template-columns: 110px repeat(11, 50px) 1fr;
+  }
+  
+  .row-5 {
+    grid-template-columns: 75px repeat(2, 50px) 300px 50px 75px repeat(3, 50px) 1fr;
+  }
+  
+  .key {
+    display: flex;
+    padding: 5px;
+    border: 2px black solid;
+    border-radius: 10px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    background-color: $color-secondary;
+    transition: 0.1s;
+    cursor: pointer;
+    
+    &:hover {
+      background-color: $color-secondary-l;
+    }
+
+    &.active {
+      background-color: $color-secondary-xl;
+      margin: 1px 1px;
+    }
+
+    &__sub {
+      width: 100%;
+      font-size: 1.2rem;
+      color: grey;
+
+      &_active {
+        font-size: 1.6rem;
+        color: black;
+      }
+    }
+
+    &_inactive {
+      font-size: 1.2rem;
+      color: grey;
+    }
+  }
+
+  /* font-size: 1.2rem;
+
+      .key__sub {
+        font-size: 1.6rem;
+      } */
+  
+  .info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: $color-primary-l;
+    border: 2px black solid;
+    border-radius: 50%;
+    cursor: pointer;
+  }
